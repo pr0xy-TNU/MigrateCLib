@@ -115,7 +115,10 @@ public class MainActivity extends AppCompatActivity {
         } else {
             binding.ivCustomFace.setImageBitmap(editBitmap);
         }
-
+        /**
+         * In this part with request current pose from c++lib, main part of code
+         *
+         */
         SizerFwkLite sizerFwkLite = SizerFwkLite.getInstance();
         for (int i = 0; i < customFaceList.size(); i++) {
             sizerFwkLite.detectPose(customFaceList.get(i));

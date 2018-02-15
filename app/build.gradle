@@ -14,6 +14,7 @@ android {
                 cppFlags "-std=c++11 -frtti -fexceptions"
             }
         }
+
     }
     buildTypes {
         release {
@@ -26,6 +27,14 @@ android {
             path "CMakeLists.txt"
         }
     }
+    dataBinding {
+        enabled = true
+    }
+
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -35,4 +44,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    compile 'com.google.android.gms:play-services-vision:11.8.0'
 }

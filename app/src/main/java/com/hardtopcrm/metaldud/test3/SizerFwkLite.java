@@ -1,5 +1,7 @@
 package com.hardtopcrm.metaldud.test3;
 
+import com.hardtopcrm.metaldud.test3.entity.CustomFace;
+
 /**
  * Created by user on 14.02.18.
  */
@@ -7,27 +9,35 @@ package com.hardtopcrm.metaldud.test3;
 class SizerFwkLite {
 
     private static SizerFwkLite instance;
+    private CustomFace currentFace;
 
     enum SizerPose {
-        SCAN_NOT_STARTED,
-        STEP_INTO_THE_OUTLINE,
-        STEP_OUT_OF_VIEW,
-        LEARNING_BACKGROUND,
-        STEP_BACK_INTO_VIEW,
-        LEGS_APART,
-        LEGS_TOGETHER,
-        SPRAD_ARMS,
-        RAISE_HANDS,
-        ROTATING,
-        ROTATION_STARTED,
-        ROTATION90,
-        ROTATION180,
-        ROTATION270,
-        ROTATION_ENDED,
-        LOWER_ARMS,
-        SCAN_ENDED
+        SCAN_NOT_STARTED("Not started"),
+        STEP_INTO_THE_OUTLINE("Step into the outline"),
+        STEP_OUT_OF_VIEW("Step out of view"),
+        LEARNING_BACKGROUND("Learning Background"),
+        STEP_BACK_INTO_VIEW("Step back into view"),
+        LEGS_APART("Legs apart"),
+        LEGS_TOGETHER("Legs together"),
+        SPRAD_ARMS("Spread Arms"),
+        RAISE_HANDS("Raise Hands"),
+        ROTATING("Rotating"),
+        ROTATION_STARTED("Rotation Started"),
+        ROTATION90("Rotation 90"),
+        ROTATION180("Rotation 180"),
+        ROTATION270("Rotation 270"),
+        ROTATION_ENDED("Rotation Ended"),
+        LOWER_ARMS("Lower your arms"),
+        SCAN_ENDED("Scan completed"),
+        UNKNOWN("Unknown");
+        String poseName;
+
+        SizerPose(String pose) {
+            this.poseName = pose;
+        }
 
     }
+
 
     enum SizerPoseError {
         POSEERROR_NOERROR,
@@ -58,7 +68,7 @@ class SizerFwkLite {
         SizerFwkLiteNative();
     }
 
-    public void detectPoseFromNative(int frameID,
+    public void detectPose(int frameID,
         float RGBImageTimestamp,
         float deviceTiltDegrees,
         int head_top_x,
@@ -75,7 +85,18 @@ class SizerFwkLite {
     }
 
 
-    public String getCurDetectedPoseDescriptionFromNative() {
+    public void detectPose(CustomFace customFace) {
+        detectPoseNative(1,
+            0,
+            0,
+            (int) customFace.getHeadTopX(),
+            (int) customFace.getHeadTopY(),
+            (int) customFace.getHeadWidth(),
+            (int) customFace.getHeadWidth());
+    }
+
+
+    public String getCurDetectedPoseDescription() {
         return getCurDetectedPoseDescriptionNative();
     }
 
@@ -88,14 +109,16 @@ class SizerFwkLite {
     }
 
     public String getPoseDescription(SizerPose sizerPose) {
-        return getPoseDescriptionNative(convertPoseIntoNative(sizerPose));
+        //return getPoseDescriptionNative(convertPoseJavaToNative(sizerPose));
+        return getPoseDescriptionNative(sizerPose.ordinal());
     }
 
-    public String getCurrentPoseInfo() {
-        return getInfoNative();
+    public SizerPose getCurrentPoseInfo() {
+        return SizerPose.valueOf(getInfoNative());
     }
 
-    private int convertPoseIntoNative(SizerPose javaPose) {
+
+    /*private int convertPoseJavaToNative(SizerPose javaPose) {
         switch (javaPose) {
 
             case SCAN_NOT_STARTED:
@@ -134,7 +157,7 @@ class SizerFwkLite {
                 return 16;
         }
         return 0;
-    }
+    }*/
 
 
     /**

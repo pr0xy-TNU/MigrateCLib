@@ -222,7 +222,7 @@ std::string SizerFwkLite::getInfo() {
   std::string buffer;
   for (int i = 0; i < 32; ++i) {
     if (poseMaximalTimouts[i] == 0) {
-      buffer += "2";
+      buffer += "3";
     } else {
       buffer += poseMaximalTimouts[i];
     }
